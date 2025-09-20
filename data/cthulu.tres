@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=2 format=3 uid="uid://sslhdc7s3f3"]
+
+[ext_resource type="Script" uid="uid://xrmf3vqr0w3o" path="res://scripts/char_data.gd" id="1_r27fj"]
+
+[resource]
+script = ExtResource("1_r27fj")
+metadata/_custom_type_script = "uid://xrmf3vqr0w3o"
