@@ -144,7 +144,7 @@ func perform_make(is_super: bool = false):
 func take_damage(damage: int, knockback: Vector2 = Vector2.ZERO):
 	current_hp = max(0, current_hp - damage)
 	velocity = knockback
-	gain_moya(12) # Gain mana when taking damage
+	gain_moya(damage/3) # Gain mana when taking damage
 	emit_signal("hp_changed", current_hp, character_data.vitality)
 	
 	# TODO: Transition to a "Hitstun" state
@@ -169,3 +169,25 @@ func set_crouching(is_crouching: bool):
 	# Move the collider down so the player's feet stay on the ground
 	var offset = (default_collider_height - target_height) / 2
 	collision_shape.position.y = offset
+
+func on_grab_success(opponent: Player):
+	print(name + " successfully grabbed " + opponent.name)
+	
+	# Check if the opponent is another player with the required functions.
+	if opponent.has_method("get_grabbed_by") and opponent.has_method("take_damage"):
+		# 1. Force the opponent into the "Grabbed" state.
+		opponent.get_grabbed_by(self)
+		
+		# 2. Apply the grab damage from our CharData.
+		opponent.take_damage(character_data.grab_dmg)
+
+
+# This function is called by an attacker to force this player into the Grabbed state.
+func get_grabbed_by(attacker: Player):
+	# Immediately transition our own state machine into the Grabbed state.
+	state_machine.transition_to("Grabbed")
+	
+	# We can also use this moment to make sure we are positioned correctly
+	# relative to the attacker, for example, right in front of them.
+	var direction = 1 if attacker.get_node("Sprite2D").is_flipped_h() else -1
+	global_position.x = attacker.global_position.x - (60 * direction) # Match the grabbox offset

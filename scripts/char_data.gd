@@ -48,6 +48,10 @@ extends Resource
 @export var launcher_dmg: int = 160 # Launcher
 # Scene for the hitbox that attacks will spawn
 @export var hitbox_scene: PackedScene
+@export var dodge_impulse: float = 800.0
+@export var parry_window: float = 0.2 # 0.2 seconds
+@export var grab_duration: float = 1.0 
+
 
 @export_group("Make System")
 @export var make_scene: PackedScene # e.g., a platform scene
