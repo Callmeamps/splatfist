@@ -1,4 +1,3 @@
-# FILE: scripts/fsm/grab.gd
 extends BaseAttackState
 
 # Preload the Grabbox scene so we can create instances of it.

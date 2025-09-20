@@ -1,9 +1,10 @@
-[gd_scene load_steps=86 format=3 uid="uid://d17gtwhn5dsrv"]
+[gd_scene load_steps=90 format=3 uid="uid://d17gtwhn5dsrv"]
 
 [ext_resource type="Script" uid="uid://dnnbw2w5hidme" path="res://scripts/player.gd" id="1_14xco"]
 [ext_resource type="Texture2D" uid="uid://b4qjgke5h0l2v" path="res://assets/chars/cthulu/death/death_1.png" id="1_qeqto"]
 [ext_resource type="Resource" uid="uid://sslhdc7s3f3" path="res://data/cthulu.tres" id="2_d07ft"]
 [ext_resource type="Texture2D" uid="uid://owfo43o1hey0" path="res://assets/chars/cthulu/death/death_2.png" id="2_h1mfe"]
+[ext_resource type="Resource" uid="uid://bipihjhe7rrv2" path="res://data/cthulu_meta.tres" id="3_8f30h"]
 [ext_resource type="Texture2D" uid="uid://bowg6el17lku6" path="res://assets/chars/cthulu/death/death_3.png" id="3_14xco"]
 [ext_resource type="Texture2D" uid="uid://brxgkuvbl4l1s" path="res://assets/chars/cthulu/death/death_4.png" id="4_d07ft"]
 [ext_resource type="Texture2D" uid="uid://bmew60n5ygucn" path="res://assets/chars/cthulu/death/death_5.png" id="5_rf1x8"]
@@ -83,6 +84,9 @@
 [ext_resource type="Script" uid="uid://dtg5vfhh1ctm6" path="res://scripts/fsm/lite_atk.gd" id="79_tpv0w"]
 [ext_resource type="Script" uid="uid://k3gk6jwwoyvh" path="res://scripts/fsm/bash.gd" id="80_ih0yx"]
 [ext_resource type="Script" uid="uid://dmixv34lrg2sp" path="res://scripts/fsm/launcher.gd" id="80_nq7uc"]
+[ext_resource type="Script" uid="uid://dsmmrw0ev4yyv" path="res://scripts/fsm/grab.gd" id="81_bqkbw"]
+[ext_resource type="Script" uid="uid://ddxoyrmm3w7o3" path="res://scripts/fsm/grabbed.gd" id="82_dxujf"]
+[ext_resource type="Script" uid="uid://mcmenvup3u4m" path="res://scripts/fsm/parry.gd" id="83_n4e0y"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6trol"]
 animations = [{
@@ -325,6 +329,7 @@ height = 62.0
 collision_layer = 2
 script = ExtResource("1_14xco")
 character_data = ExtResource("2_d07ft")
+meta_data = ExtResource("3_8f30h")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_6trol")
@@ -385,6 +390,15 @@ script = ExtResource("78_vxwfv")
 
 [node name="dodge" type="Node" parent="StateMachine"]
 script = ExtResource("79_32nqw")
+
+[node name="grab" type="Node" parent="StateMachine"]
+script = ExtResource("81_bqkbw")
+
+[node name="grabbed" type="Node" parent="StateMachine"]
+script = ExtResource("82_dxujf")
+
+[node name="parry" type="Node" parent="StateMachine"]
+script = ExtResource("83_n4e0y")
 
 [node name="attacks" type="Node" parent="StateMachine"]
 

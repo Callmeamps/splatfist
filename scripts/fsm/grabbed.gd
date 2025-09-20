@@ -20,4 +20,4 @@ func physics_update(delta):
 	if timer <= 0:
 		# After being held, the player is put into the "fall" state.
 		# This could later be a "knockdown" state.
-		fsm.transition_to("Fall")
+		state_machine.transition_to("Fall")

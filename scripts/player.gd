@@ -14,6 +14,7 @@ signal player_knocked_out(player)
 
 # --- Exports ---
 @export var character_data: CharacterData
+@export var meta_data: MetaData
 
 # --- Nodes ---
 @onready var state_machine: StateMachine = $StateMachine
@@ -144,7 +145,7 @@ func perform_make(is_super: bool = false):
 func take_damage(damage: int, knockback: Vector2 = Vector2.ZERO):
 	current_hp = max(0, current_hp - damage)
 	velocity = knockback
-	gain_moya(damage/3) # Gain mana when taking damage
+	gain_moya(damage) # Gain mana when taking damage
 	emit_signal("hp_changed", current_hp, character_data.vitality)
 	
 	# TODO: Transition to a "Hitstun" state
@@ -189,5 +190,5 @@ func get_grabbed_by(attacker: Player):
 	
 	# We can also use this moment to make sure we are positioned correctly
 	# relative to the attacker, for example, right in front of them.
-	var direction = 1 if attacker.get_node("Sprite2D").is_flipped_h() else -1
+	var direction = 1 if attacker.sprite.is_flipped_h() else -1
 	global_position.x = attacker.global_position.x - (60 * direction) # Match the grabbox offset

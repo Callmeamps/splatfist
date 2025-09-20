@@ -8,7 +8,7 @@ func enter():
 	# --- Endurance Check ---
 	if player.character_data.endurance < 12:
 		# If you can't afford it, go back to blocking.
-		fsm.transition_to("Block")
+		state_machine.transition_to("Block")
 		return
 
 	# --- Subtract Endurance Cost ---
@@ -30,7 +30,7 @@ func physics_update(delta):
 	
 	# When the parry window is over, transition back to the Block state.
 	if parry_timer <= 0:
-		fsm.transition_to("Block")
+		state_machine.transition_to("Block")
 		
 
 func exit():

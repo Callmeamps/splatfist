@@ -3,7 +3,10 @@ extends PlayerState
 func enter():
 	# --- Endurance Check ---
 	if player.character_data.endurance < 18:
-		fsm.transition_to("Idle") if player.is_on_floor() else fsm.transition_to("Fall")
+		if player.is_on_floor():
+			state_machine.transition_to("Idle") 
+		else: 
+			state_machine.transition_to("Fall")
 		return
 
 	# --- Subtract Endurance Cost ---
@@ -18,7 +21,7 @@ func enter():
 	# --- Standard Logic ---
 	playback.travel("dodge")
 	var direction = 1 if player.sprite.is_flipped_h() else -1
-	player.velocity.x = dodge_impulse * -direction
+	player.velocity.x = player.character_data.dodge_impulse * -direction
 
 func exit():
 	# --- Remove Invulnerability ---
@@ -27,9 +30,12 @@ func exit():
 
 func physics_update(delta):
 	if not player.is_on_floor():
-		player.velocity.y += gravity * delta
+		player.velocity.y += player.character_data.gravity * delta
 	
 	player.move_and_slide()
 	
 	if not playback.is_playing():
-		fsm.transition_to("Idle") if player.is_on_floor() else fsm.transition_to("Fall")
+		if player.is_on_floor():
+			state_machine.transition_to("Idle") 
+		else: 
+			state_machine.transition_to("Fall")
