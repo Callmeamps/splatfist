@@ -16,7 +16,7 @@ func enter():
 	print("Player Endurance: ", player.character_data.endurance)
 
 	# --- Animation & Timer ---
-	playback.travel("parry")
+	player.spirte.play("parry")
 	parry_timer = player.character_data.parry_window
 	
 	# --- Parry Hitbox (Placeholder) ---

@@ -7,7 +7,7 @@ var timer: float = 0.0
 func enter():
 	# Stop all player movement immediately.
 	player.velocity = Vector2.ZERO
-	playback.travel("grabbed") # Assumes you have a "grabbed" animation
+	player.spirte.play("grabbed") # Assumes you have a "grabbed" animation
 	timer = player.character_data.grab_duration
 
 func physics_update(delta):

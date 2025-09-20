@@ -23,7 +23,7 @@ func enter():
 	player.get_node("Hitbox").set_deferred("disabled", true)
 	
 	# --- Standard Logic ---
-	playback.travel("dodge")
+	player.spirte.play("dodge")
 	var direction = 1 if player.sprite.is_flipped_h() else -1
 	player.velocity.x = player.character_data.dodge_impulse * -direction
 
@@ -53,7 +53,7 @@ func physics_update(delta):
 	
 	player.move_and_slide()
 	
-	if not playback.is_playing():
+	if not player.spirte.is_playing():
 		if player.is_on_floor():
 			state_machine.transition_to("Idle")
 		else: 
