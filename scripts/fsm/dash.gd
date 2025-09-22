@@ -16,6 +16,12 @@ func process_physics(delta: float):
 	if dash_timer <= 0:
 		var input_axis = Input.get_axis("move_left", "move_right")
 		if not is_zero_approx(input_axis):
-			state_machine.set_state("Run")
+			state_machine.set_state("Walk")
 		else:
 			state_machine.set_state("Idle")
+
+func exit():
+	# Reset the player's horizontal velocity to prevent sliding.
+	# The next state (Idle or Run) will then take over correctly.
+	player.velocity.x = 0
+	dash_timer = 0

@@ -1,14 +1,14 @@
-# FILE: scripts/Grabbox.gd
+# FILE: scripts/grabbox.gd (Refactored for Manager System)
 extends Area2D
 
-# This signal will be sent when we successfully grab someone.
-signal grab_successful(body)
-
-func _on_body_entered(body):
-	# We need to make sure we're not grabbing ourselves and that the body is an opponent.
-	# For now, we'll just check that it's not the owner (the player who spawned it).
-	if body != owner:
-		print("Grab successful on: ", body.name)
-		grab_successful.emit(body)
-		# We delete the grabbox after it connects to prevent multiple hits.
+# Ensure this signal is connected to this function in the Godot Editor's Node tab.
+func _on_body_entered(body: Node2D):
+	# Check if we've collided with a player that isn't ourselves.
+	if body != owner and body.is_in_group("Player"):
+	
+		# Report the grab attempt to the global CombatManager.
+		# The CombatManager will decide if it was successful based on the rules.
+		CombatManager.process_grab(self, body)
+		
+		# A grabbox should only ever connect once, so we delete it immediately after the report.
 		queue_free()

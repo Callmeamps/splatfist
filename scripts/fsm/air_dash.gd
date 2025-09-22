@@ -12,7 +12,7 @@ func enter():
 	# Determine dash direction (8-way input)
 	var dash_direction = Vector2(
 		Input.get_axis("move_left", "move_right"),
-		Input.get_axis("move_up", "move_down") # Assumes you have these inputs mapped
+		Input.get_axis("jump", "crouch") # Assumes you have these inputs mapped
 	).normalized()
 	
 	# If no direction is held, dash forward.

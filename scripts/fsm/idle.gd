@@ -25,3 +25,11 @@ func process_physics(delta: float):
 	if not player.is_on_floor() and player.velocity.y > 0:
 		state_machine.set_state("Fall")
 		return
+
+func process_input(event: InputEvent) -> void:
+# Transitions
+	if event.is_action_just_pressed("move_right"):
+		state_machine._check_for_dash(1)
+	elif event.is_action_just_pressed("move_left"):
+		state_machine._check_for_dash(-1)
+

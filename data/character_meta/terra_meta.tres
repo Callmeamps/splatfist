@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MetaData" load_steps=3 format=3 uid="uid://rrk2vb2qrfsc"]
+
+[ext_resource type="Resource" uid="uid://snj16jwvwld" path="res://data/character_stats/terra_stats.tres" id="1_pvb40"]
+[ext_resource type="Script" uid="uid://b2ddnmc7tnork" path="res://scripts/meta_data.gd" id="1_yda87"]
+
+[resource]
+script = ExtResource("1_yda87")
+name = "Terra Thorne"
+species = "Terasaur"
+character_data = ExtResource("1_pvb40")
+styles = "Earth Judo"
+archetype = "Grappler"
+metadata/_custom_type_script = "uid://b2ddnmc7tnork"

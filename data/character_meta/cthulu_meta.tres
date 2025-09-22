@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MetaData" load_steps=3 format=3 uid="uid://bipihjhe7rrv2"]
+
+[ext_resource type="Resource" uid="uid://sslhdc7s3f3" path="res://data/character_stats/cthulu_stats.tres" id="1_oklyn"]
+[ext_resource type="Script" uid="uid://b2ddnmc7tnork" path="res://scripts/meta_data.gd" id="1_r305j"]
+
+[resource]
+script = ExtResource("1_r305j")
+character_data = ExtResource("1_oklyn")
+metadata/_custom_type_script = "uid://b2ddnmc7tnork"

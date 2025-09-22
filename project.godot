@@ -15,6 +15,12 @@ run/main_scene="uid://chry2832j5xmx"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ResourceManager="*res://scripts/managers/resource_manager.gd"
+UIManager="*res://scripts/managers/ui_manager.gd"
+CombatManager="*res://scripts/managers/combat_manager.gd"
+
 [dotnet]
 
 project/assembly_name="Splatfist"

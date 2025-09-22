@@ -9,7 +9,7 @@ func enter():
 func exit():
 	player.set_crouching(false)
 
-func process_physics(delta: float):
+func process_physics(_delta: float):
 	var input_axis = Input.get_axis("move_left", "move_right")
 
 	# Transitions

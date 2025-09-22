@@ -13,9 +13,11 @@ signal moya_changed(current_moya, max_moya)
 signal player_knocked_out(player)
 
 # --- Exports ---
-@export var character_data: CharacterData
-@export var meta_data: MetaData
+@export var character_name: String = "cthulu_meta"
 
+# These variables will hold the data fetched from the ResourceManager.
+var meta_data: MetaData
+var character_data: CharacterData
 # --- Nodes ---
 @onready var state_machine: StateMachine = $StateMachine
 #@onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -40,10 +42,18 @@ var make_cooldown_timer: float = 0.0
 var default_collider_height: float
 
 func _ready() -> void:
-	if not character_data:
-		push_error("Player scene is missing its CharacterData resource!")
-		return
-	
+	meta_data = ResourceManager.get_character_meta_data(character_name)
+	if meta_data:
+		# CORRECTED: Using the proper class_name 'CharacterData'
+		character_data = meta_data.character_data as CharacterData
+		if not character_data:
+			push_error("PLAYER ERROR: MetaData for " + character_name + " is missing its CharacterData!")
+			get_tree().quit()
+	else:
+		push_error("PLAYER ERROR: Could not get MetaData for " + character_name)
+		get_tree().quit()
+
+
 	# Store the initial height of the collision shape.
 	if collision_shape and collision_shape.shape is CapsuleShape2D:
 		default_collider_height = collision_shape.shape.height
@@ -74,10 +84,12 @@ func _physics_process(delta: float) -> void:
 	# Delegate logic to the current state
 	state_machine.process_physics(delta)
 	
-	# Update sprite direction
-	if sprite:
-		sprite.flip_h = (facing_direction < 0)
-	
+	 # Handle facing direction centrally.
+	var input_axis = Input.get_axis("move_left", "move_right")
+	if not is_zero_approx(input_axis):
+		facing_direction = int(sign(input_axis))
+		sprite.flip_h = facing_direction == -1
+
 	move_and_slide()
 	
 	# Reset jumps and air dashes when landed
@@ -142,18 +154,28 @@ func perform_make(is_super: bool = false):
 		get_parent().add_child(make_instance) # Add to main scene tree
 		make_cooldown_timer = character_data.make_cooldown
 
-func take_damage(damage: int, knockback: Vector2 = Vector2.ZERO):
-	current_hp = max(0, current_hp - damage)
-	velocity = knockback
-	gain_moya(damage) # Gain mana when taking damage
+func take_damage(amount: int):
+	current_hp = max(0, current_hp - amount)
+	gain_moya(12) # Gain 1a2 Moya for taking a hit, per design doc
+	# CORRECTED: Using the proper class_name 'CharacterData'
 	emit_signal("hp_changed", current_hp, character_data.vitality)
-	
-	# TODO: Transition to a "Hitstun" state
-	
 	if current_hp <= 0:
 		emit_signal("player_knocked_out", self)
-		# TODO: Transition to a "KnockedOut" state
+	# TODO: Transition to a "Hitstun" state
+	
+# This is a new function for handling being grabbed.
+func get_grabbed_by(attacker: Player):
+	state_machine.transition_to("Grabbed")
+	var direction = 1 if attacker.sprite.is_flipped_h() else -1
+	global_position.x = attacker.global_position.x + (60 * direction)
 
+# --- HELPER FUNCTIONS FOR MANAGERS ---
+
+func is_blocking() -> bool:
+	return state_machine.current_state_name == "Block"
+
+func is_player() -> bool:
+	return true
 func set_crouching(is_crouching: bool):
 	if not collision_shape: return
 	
@@ -181,14 +203,3 @@ func on_grab_success(opponent: Player):
 		
 		# 2. Apply the grab damage from our CharData.
 		opponent.take_damage(character_data.grab_dmg)
-
-
-# This function is called by an attacker to force this player into the Grabbed state.
-func get_grabbed_by(attacker: Player):
-	# Immediately transition our own state machine into the Grabbed state.
-	state_machine.transition_to("Grabbed")
-	
-	# We can also use this moment to make sure we are positioned correctly
-	# relative to the attacker, for example, right in front of them.
-	var direction = 1 if attacker.sprite.is_flipped_h() else -1
-	global_position.x = attacker.global_position.x - (60 * direction) # Match the grabbox offset

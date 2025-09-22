@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=2 format=3 uid="uid://snj16jwvwld"]
+
+[ext_resource type="Script" uid="uid://xrmf3vqr0w3o" path="res://scripts/char_data.gd" id="1_y00m2"]
+
+[resource]
+script = ExtResource("1_y00m2")
+constitution = 110
+vitality = 1200
+strength = 140
+agility = 80
+speed = 75
+walk_speed = 150.0
+dash_speed = 200.0
+run_speed = 250.0
+ground_acceleration = 2000.0
+gravity = 2200.0
+max_fall_speed = 2800.0
+jump_velocity = -500.0
+double_jump_velocity = -380.0
+max_stamina = 120.0
+stamina_regen_rate = 5.0
+metadata/_custom_type_script = "uid://xrmf3vqr0w3o"
